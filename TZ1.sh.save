@@ -1,0 +1,19 @@
+#!/bin/bash
+read  input_dir
+read  output_dir
+dir_list=($(find "$input_dir" -type d))
+level1_files_list=($(find "$input_dir" -maxdepth 1 -type f)) 
+all_file_list=($(find "$input_dir" -type f))
+for i in "${all_file_list[@]}"; do
+    name_of_file=$(basename "$i")
+    if [ -e "$output_dir/$name_of_file" ]; then
+        change_for_same_files=1
+        while [ -e "$output_dir/$name_of_file.$change_for_same_files" ]; do
+             change_for_same_files=$((change_for_same_files + 1))
+        done 
+        cp -p "$i" "$output_dir/$name_of_file.$change_for_same_files"
+    else 
+        cp -p "$i" "$output_dir"
+    fi
+done
+
