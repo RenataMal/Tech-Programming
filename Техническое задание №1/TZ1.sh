@@ -4,11 +4,14 @@ read  input_dir # принять входную директорию
 echo "output_dir"
 read  output_dir # принять выходную директорию
 dir_list=()
+dir_list_block=()
 level1_files_list=()
 all_file_list=()
 for i in "$input_dir"/*; do
 	if [[ -d "$i" && -x "$i" && ! "$(basename "$i")" = ".*" ]]; then
 		dir_list+=("$i")
+  	else 
+   		dir_list_block+=("$i")	
 	fi
 	if [[ -f "$i" && $(basename "$i" | grep -c '/') -eq 0 && ! -h "$i" && -x "$i" && "$(basename "$i")" != .* ]]; then
 		level1_files_list+=("$i")
