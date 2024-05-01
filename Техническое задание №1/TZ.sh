@@ -2,7 +2,7 @@
 
 echo "Входная директория:"
 read  input_dir # принять входную директорию
-echo "Выходная директория"
+echo "Выходная директория:"
 read  output_dir # принять выходную директорию
 dir_list=()
 dir_list_block=()
@@ -67,7 +67,7 @@ if [ ${#all_files_list[@]} -gt 0 ]; then
     printf '%s\n' "${all_files_list[@]}"
     if [ ${#level1_files_dict[@]} -gt 0 ]; then
     echo "Из них непосредственно вложены во входную директорию файлы:"
-    printf '%s\n' "${dir_list[@]}"
+    printf '%s\n' "${level1_files_dict[@]}"
     fi
 else
     echo "В результате было скопировано 0 файлов"
