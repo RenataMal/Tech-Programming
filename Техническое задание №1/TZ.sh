@@ -26,7 +26,6 @@ process_files() {
             fi
             process_files "$i"  # Рекурсивный вызов для обработки поддиректорий
         elif [[ -f "$i" ]]; then
-            all_files_list+=("$i")
             if [[ ! -w "$i" || ! -r "$i" ]]; then
                 files_list_block+=("$i")
             elif [[ "$(basename "$i")" = ".*" ]]; then
@@ -34,6 +33,10 @@ process_files() {
             elif [[ -h "$i" ]]; then
                 files_list_links+=("$i")
             else
+                all_files_list+=("$i")
+                if [[ $(basename "$i" | grep -c '/') -eq 0 ]]; then 
+				    level1_files_list+=("$i")
+                fi
                 name_of_file=$(basename "$i")
                 if [ -e "$output_dir/$name_of_file" ]; then
                     change_for_same_files=1
@@ -48,8 +51,6 @@ process_files() {
         fi
     done
 }
-
-# Вызов рекурсивной функции для обработки всех файлов и директорий
 process_files "$input_dir"
 
 echo "В результате были посещены следующие директории:"
