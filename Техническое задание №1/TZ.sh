@@ -70,7 +70,7 @@ if [ ${#all_files_list[@]} -gt 0 ]; then
     printf '%s\n' "${level1_files_dict[@]}"
     fi
 else
-    echo "В результате было скопировано 0 файлов"
+    echo "В результате было скопировано 0 файлов."
 fi
 if [ ${#files_list_block[@]} -gt 0 ]; then
     echo "Были проигнорированы файлы, к которым нет доступа чтения:"
@@ -81,6 +81,6 @@ if [ ${#files_list_hidden[@]} -gt 0 ]; then
     printf '%s\n' "${files_list_hidden[@]}"
 fi
 if [ ${#files_list_links[@]} -gt 0 ]; then
-    echo "Не учитывались файлы-ссылки"
+    echo "Не учитывались файлы-ссылки:"
     printf '%s\n' "${files_list_links[@]}"
 fi
