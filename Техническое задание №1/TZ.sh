@@ -11,7 +11,7 @@ all_files_list=()
 level1_files_dict=()
 files_list_block=()
 files_list_hidden=$(find "$input_dir" -type f -name '.*')
-files_list_links=$()
+files_list_links=()
 process_files() {
     local current_dir="$1"
     for i in "$current_dir"/*; do
@@ -46,7 +46,7 @@ process_files() {
 
 process_files "$input_dir"
 for f in "${all_files_list[@]}"; do
-    if [[ $( $("$f" | grep -c '/') - $("$input_dir" | grep -c '/') ) -eq 1 ]]; then
+    if [[ "$f" == "$input_dir/"* ]]; then
         level1_files_dict+=" $f"
     fi
 done
