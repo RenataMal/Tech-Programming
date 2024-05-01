@@ -8,9 +8,10 @@ dir_list=()
 dir_list_block=()
 dir_list_hidden=$(find "$input_dir" -type d -name '.*')
 all_files_list=()
+level1_files_list=$(find "$input_dir" -maxdepth 1 -type f ! -name '.*' ! -h -r)
 files_list_block=()
 files_list_hidden=$(find "$input_dir" -type f -name '.*')
-files_list_links=()
+files_list_links=$()
 
 # Рекурсивная функция для обхода всех файлов и директорий
 process_files() {
@@ -47,19 +48,40 @@ process_files() {
 }
 
 process_files "$input_dir"
+if [ ${#dir_list[@]} -gt 0 ]; then
+    echo "В результате были посещены следующие директории:"
+    printf '%s\n' "${dir_list[@]}"
+fi
 
-echo "В результате были посещены следующие директории:"
-printf '%s\n' "${dir_list[@]}"
-echo "Однако попались директории, к которым нет доступа:"
-printf '%s\n' "${dir_list_block[@]}"
-echo "А также скрытые директории:"
-printf '%s\n' "${dir_list_hidden[@]}"
-echo "Такие директории не учитывались"
-echo "В результате были скопированы следующие файлы:"
-printf '%s\n' "${all_files_list[@]}"
-echo "Однако были проигнорированы файлы, к которым нет доступа чтения и записи:"
-printf '%s\n' "${files_list_block[@]}"
-echo "А также скрытые файлы:"
-printf '%s\n' "${files_list_hidden[@]}"
-echo "И не учитывались файлы-ссылки"
-printf '%s\n' "${files_list_links[@]}"
+if [ ${#dir_list_block[@]} -gt 0 ]; then
+    echo "Были директории, к которым нет доступа:"
+    printf '%s\n' "${dir_list_block[@]}"
+fi
+
+if [ ${#dir_list_hidden[@]} -gt 0 ]; then
+    echo "Были скрытые директории:"
+    printf '%s\n' "${dir_list_hidden[@]}"
+    echo "Такие директории не учитывались"
+fi
+
+if [ ${#all_files_list[@]} -gt 0 ]; then
+    echo "В результате были скопированы следующие файлы:"
+    printf '%s\n' "${all_files_list[@]}"
+else
+    echo "В результате было скопировано 0 файлов"
+fi
+
+if [ ${#files_list_block[@]} -gt 0 ]; then
+    echo "Были проигнорированы файлы, к которым нет доступа чтения:"
+    printf '%s\n' "${files_list_block[@]}"
+fi
+
+if [ ${#files_list_hidden[@]} -gt 0 ]; then
+    echo "Были проигнорированы скрытые файлы:"
+    printf '%s\n' "${files_list_hidden[@]}"
+fi
+
+if [ ${#files_list_links[@]} -gt 0 ]; then
+    echo "Не учитывались файлы-ссылки"
+    printf '%s\n' "${files_list_links[@]}"
+fi
