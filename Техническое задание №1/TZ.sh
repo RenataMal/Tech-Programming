@@ -32,6 +32,7 @@ process_files() {
                 name_of_file=$(basename "$i")
 		if [[ "$i" == "$input_dir/$name_of_file" ]]; then
         		level1_files_dict+=("$i")
+	  	fi
                 if [[ -e "$output_dir/$name_of_file" ]]; then
                     change_for_same_files=1
                     while [[ -e "$output_dir/$name_of_file.$change_for_same_files" ]]; do
