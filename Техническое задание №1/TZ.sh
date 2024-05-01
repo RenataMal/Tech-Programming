@@ -15,7 +15,6 @@ files_list_links=$()
 process_files() {
     local current_dir="$1"
     for i in "$current_dir"/*; do
-	echo "$i"
         if [[ -d "$i" ]]; then
             if [[ ! -x "$i" ]]; then
                 dir_list_block+=("$i")
@@ -46,7 +45,7 @@ process_files() {
 }
 
 process_files "$input_dir"
-for f in "$all_files_list"; do
+for f in "${all_files_list[@]}"; do
     if [ $(basename "$f" | grep -c '/') -eq 0 ]; then
         level1_files_dict+=" $f"
     fi
@@ -66,9 +65,10 @@ fi
 if [ ${#all_files_list[@]} -gt 0 ]; then
     echo "В результате были скопированы следующие файлы:"
     printf '%s\n' "${all_files_list[@]}"
-    if [ ${level1_files_dict[@]} -gt 0 ]; then
-    echo "Из них непосредственно вложены в входную директорию:"
+    if [ ${#level1_files_dict[@]} -gt 0 ]; then
+    echo "Из них непосредственно вложены во входную директорию файлы:"
     printf '%s\n' "${dir_list[@]}"
+    fi
 else
     echo "В результате было скопировано 0 файлов"
 fi
