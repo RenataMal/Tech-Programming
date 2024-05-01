@@ -12,7 +12,7 @@ level1_files_dict=()
 files_list_block=()
 files_list_hidden=$(find "$input_dir" -type f -name '.*')
 files_list_links=()
-process_files() {
+process() {
     local current_dir="$1"
     for i in "$current_dir"/*; do
         if [[ -d "$i" ]]; then
@@ -20,7 +20,7 @@ process_files() {
                 dir_list_block+=("$i")
             else
 		dir_list+=("$i")
-		process_files "$i"
+		process "$i"
   	    fi
         elif [[ -f "$i" ]]; then
             if [[  ! -r "$i" ]]; then
@@ -47,7 +47,7 @@ process_files() {
     done
 }
 
-process_files "$input_dir"
+process "$input_dir"
 
 if [[ ${#dir_list[@]} -gt 0 ]]; then
     echo "В результате были посещены следующие директории:"
