@@ -8,12 +8,10 @@ dir_list=()
 dir_list_block=()
 dir_list_hidden=$(find "$input_dir" -type d -name '.*')
 all_files_list=()
-level1_files_list=$(find "$input_dir" -maxdepth 1 -type f ! -name '.*' ! -h -r)
+level1_files_dict=()
 files_list_block=()
 files_list_hidden=$(find "$input_dir" -type f -name '.*')
 files_list_links=$()
-
-# Рекурсивная функция для обхода всех файлов и директорий
 process_files() {
     local current_dir="$1"
     for i in "$current_dir"/*; do
@@ -48,39 +46,40 @@ process_files() {
 }
 
 process_files "$input_dir"
+for f in "$all_files_list"; do
+    if [ $(basename "$f" | grep -c '/') -eq 0 ]; then
+        level1_files_dict+=" $f"
+    fi
+done
 if [ ${#dir_list[@]} -gt 0 ]; then
     echo "В результате были посещены следующие директории:"
     printf '%s\n' "${dir_list[@]}"
 fi
-
 if [ ${#dir_list_block[@]} -gt 0 ]; then
-    echo "Были директории, к которым нет доступа:"
+    echo "Были пропущены директории, к которым нет доступа:"
     printf '%s\n' "${dir_list_block[@]}"
 fi
-
 if [ ${#dir_list_hidden[@]} -gt 0 ]; then
-    echo "Были скрытые директории:"
+    echo "Были пропущены скрытые директории:"
     printf '%s\n' "${dir_list_hidden[@]}"
-    echo "Такие директории не учитывались"
 fi
-
 if [ ${#all_files_list[@]} -gt 0 ]; then
     echo "В результате были скопированы следующие файлы:"
     printf '%s\n' "${all_files_list[@]}"
+    if [ ${level1_files_dict[@]} -gt 0 ]; then
+    echo "Из них непосредственно вложены в входную директорию:"
+    printf '%s\n' "${dir_list[@]}"
 else
     echo "В результате было скопировано 0 файлов"
 fi
-
 if [ ${#files_list_block[@]} -gt 0 ]; then
     echo "Были проигнорированы файлы, к которым нет доступа чтения:"
     printf '%s\n' "${files_list_block[@]}"
 fi
-
 if [ ${#files_list_hidden[@]} -gt 0 ]; then
     echo "Были проигнорированы скрытые файлы:"
     printf '%s\n' "${files_list_hidden[@]}"
 fi
-
 if [ ${#files_list_links[@]} -gt 0 ]; then
     echo "Не учитывались файлы-ссылки"
     printf '%s\n' "${files_list_links[@]}"
