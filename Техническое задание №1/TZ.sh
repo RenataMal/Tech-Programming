@@ -30,9 +30,9 @@ process_files() {
             else
 		all_files_list+=("$i")
                 name_of_file=$(basename "$i")
-                if [ -e "$output_dir/$name_of_file" ]; then
+                if [[ -e "$output_dir/$name_of_file" ]]; then
                     change_for_same_files=1
-                    while [ -e "$output_dir/$name_of_file.$change_for_same_files" ]; do
+                    while [[ -e "$output_dir/$name_of_file.$change_for_same_files" ]]; do
                         change_for_same_files=$((change_for_same_files + 1))
                     done
                     cp -p "$i" "$output_dir/$name_of_file.$change_for_same_files"
@@ -46,41 +46,41 @@ process_files() {
 
 process_files "$input_dir"
 for f in "${all_files_list[@]}"; do
-    if [ $(basename "$f" | grep -c '/') -eq 0 ]; then
+    if [[ $( $("$f" | grep -c '/') - $("$input_dir" | grep -c '/') ) -eq 1 ]]; then
         level1_files_dict+=" $f"
     fi
 done
-if [ ${#dir_list[@]} -gt 0 ]; then
+if [[ ${#dir_list[@]} -gt 0 ]]; then
     echo "В результате были посещены следующие директории:"
     printf '%s\n' "${dir_list[@]}"
 fi
-if [ ${#dir_list_block[@]} -gt 0 ]; then
+if [[ ${#dir_list_block[@]} -gt 0 ]]; then
     echo "Были пропущены директории, к которым нет доступа:"
     printf '%s\n' "${dir_list_block[@]}"
 fi
-if [ ${#dir_list_hidden[@]} -gt 0 ]; then
+if [[ ${#dir_list_hidden[@]} -gt 0 ]]; then
     echo "Были пропущены скрытые директории:"
     printf '%s\n' "${dir_list_hidden[@]}"
 fi
-if [ ${#all_files_list[@]} -gt 0 ]; then
+if [[ ${#all_files_list[@]} -gt 0 ]]; then
     echo "В результате были скопированы следующие файлы:"
     printf '%s\n' "${all_files_list[@]}"
-    if [ ${#level1_files_dict[@]} -gt 0 ]; then
+    if [[ ${#level1_files_dict[@]} -gt 0 ]]; then
     echo "Из них непосредственно вложены во входную директорию файлы:"
     printf '%s\n' "${level1_files_dict[@]}"
     fi
 else
     echo "В результате было скопировано 0 файлов."
 fi
-if [ ${#files_list_block[@]} -gt 0 ]; then
+if [[ ${#files_list_block[@]} -gt 0 ]]; then
     echo "Были проигнорированы файлы, к которым нет доступа чтения:"
     printf '%s\n' "${files_list_block[@]}"
 fi
-if [ ${#files_list_hidden[@]} -gt 0 ]; then
+if [[ ${#files_list_hidden[@]} -gt 0 ]]; then
     echo "Были проигнорированы скрытые файлы:"
     printf '%s\n' "${files_list_hidden[@]}"
 fi
-if [ ${#files_list_links[@]} -gt 0 ]; then
+if [[ ${#files_list_links[@]} -gt 0 ]]; then
     echo "Не учитывались файлы-ссылки:"
     printf '%s\n' "${files_list_links[@]}"
 fi
