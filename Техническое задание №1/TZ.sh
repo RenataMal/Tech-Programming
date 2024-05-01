@@ -15,7 +15,6 @@ files_list_links=()
 # Рекурсивная функция для обхода всех файлов и директорий
 process_files() {
     local current_dir="$1"
-
     for i in "$current_dir"/*; do
         if [[ -d "$i" ]]; then
             dir_list+=("$i")
@@ -23,17 +22,18 @@ process_files() {
                 dir_list_block+=("$i")
             elif [[ "$(basename "$i")" = ".*" ]]; then
                 dir_list_hidden+=("$i")
-            fi
-            process_files "$i"  # Рекурсивный вызов для обработки поддиректорий
+            else
+				process_files "$i"
+			fi
         elif [[ -f "$i" ]]; then
-            all_files_list+=("$i")
-            if [[ ! -w "$i" || ! -r "$i" ]]; then
+            if [[ ! -w "$i" || ! -r "$i" || ! -x "$i" ]]; then
                 files_list_block+=("$i")
             elif [[ "$(basename "$i")" = ".*" ]]; then
                 files_list_hidden+=("$i")
             elif [[ -h "$i" ]]; then
                 files_list_links+=("$i")
             else
+				all_files_list+=("$i")
                 name_of_file=$(basename "$i")
                 if [ -e "$output_dir/$name_of_file" ]; then
                     change_for_same_files=1
@@ -49,7 +49,6 @@ process_files() {
     done
 }
 
-# Вызов рекурсивной функции для обработки всех файлов и директорий
 process_files "$input_dir"
 
 echo "В результате были посещены следующие директории:"
@@ -60,7 +59,7 @@ echo "А также скрытые директории:"
 printf '%s\n' "${dir_list_hidden[@]}"
 echo "Такие директории не учитывались"
 echo "В результате были скопированы следующие файлы:"
-printf '%s\n' "${all_files_list[@]}"
+echo "$all_files_list"
 echo "Однако были проигнорированы файлы, к которым нет доступа чтения и записи:"
 printf '%s\n' "${files_list_block[@]}"
 echo "А также скрытые файлы:"
