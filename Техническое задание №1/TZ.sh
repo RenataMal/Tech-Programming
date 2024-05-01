@@ -16,13 +16,14 @@ files_list_links=()
 process_files() {
     local current_dir="$1"
     for i in "$current_dir"/*; do
+	echo "$i"
         if [[ -d "$i" ]]; then
-            dir_list+=("$i")
             if [[ ! -x "$i" ]]; then
                 dir_list_block+=("$i")
             elif [[ "$(basename "$i")" = ".*" ]]; then
                 dir_list_hidden+=("$i")
             else
+		dir_list+=("$i")
 		process_files "$i"
   	    fi
         elif [[ -f "$i" ]]; then
@@ -59,7 +60,7 @@ echo "А также скрытые директории:"
 printf '%s\n' "${dir_list_hidden[@]}"
 echo "Такие директории не учитывались"
 echo "В результате были скопированы следующие файлы:"
-echo "$all_files_list"
+printf '%s\n' "${all_files_list[@]}"
 echo "Однако были проигнорированы файлы, к которым нет доступа чтения и записи:"
 printf '%s\n' "${files_list_block[@]}"
 echo "А также скрытые файлы:"
