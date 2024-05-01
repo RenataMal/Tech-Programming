@@ -6,10 +6,10 @@ echo "Выходная директория"
 read  output_dir # принять выходную директорию
 dir_list=()
 dir_list_block=()
-dir_list_hidden=()
+dir_list_hidden=$(find "$input_dir" -type d -name '.*')
 all_files_list=()
 files_list_block=()
-files_list_hidden=()
+files_list_hidden=$(find "$input_dir" -type f -name '.*')
 files_list_links=()
 
 # Рекурсивная функция для обхода всех файлов и директорий
@@ -20,8 +20,6 @@ process_files() {
         if [[ -d "$i" ]]; then
             if [[ ! -x "$i" ]]; then
                 dir_list_block+=("$i")
-            elif [[ "$(basename "$i")" = ".*" ]]; then
-                dir_list_hidden+=("$i")
             else
 		dir_list+=("$i")
 		process_files "$i"
@@ -29,8 +27,6 @@ process_files() {
         elif [[ -f "$i" ]]; then
             if [[  ! -r "$i" ]]; then
                 files_list_block+=("$i")
-            elif [[ "$(basename "$i")" == .* ]]; then
-                files_list_hidden+=("$i")
             elif [[ -h "$i" ]]; then
                 files_list_links+=("$i")
             else
