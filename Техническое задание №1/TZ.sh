@@ -23,8 +23,8 @@ process_files() {
             elif [[ "$(basename "$i")" = ".*" ]]; then
                 dir_list_hidden+=("$i")
             else
-				process_files "$i"
-			fi
+		process_files "$i"
+  	    fi
         elif [[ -f "$i" ]]; then
             if [[ ! -w "$i" || ! -r "$i" || ! -x "$i" ]]; then
                 files_list_block+=("$i")
