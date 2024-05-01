@@ -1,54 +1,57 @@
 #!/bin/bash
 
 echo "Входная директория:"
-read  input_dir # принять входную директорию
+read  input_dir # Принять входную директорию
 echo "Выходная директория:"
-read  output_dir # принять выходную директорию
-dir_list=()
-dir_list_block=()
-dir_list_hidden=$(find "$input_dir" -type d -name '.*')
-all_files_list=()
-level1_files_dict=()
-files_list_block=()
-files_list_hidden=$(find "$input_dir" -type f -name '.*')
-files_list_links=()
+read  output_dir # Принять выходную директорию
+dir_list=() # Список посещенных директорий
+dir_list_block=() # Список директорий, у которых нет права доступа x, на выполнение 
+dir_list_hidden=$(find "$input_dir" -type d -name '.*') # Список скрытых директорий
+all_files_list=() # Список всех файлов, вложенных во входную директорию, которые копируются
+level1_files_dict=() # Список всех файлов, непосредственно вложенных во входную директорию
+files_list_block=() # Список файлов, у которых нет права доступа r, на чтение 
+files_list_hidden=$(find "$input_dir" -type f -name '.*') # Список скрытых файлов
+files_list_links=() # Список файлов-ссылок 
+
+# Функция для обработки файлов и директорий
 process() {
-    local current_dir="$1"
-    for i in "$current_dir"/*; do
-        if [[ -d "$i" ]]; then
+    local curr_dir="$1"
+    # Перебор всех элементов в текущей директории
+    for i in "$curr_dir"/*; do
+        if [[ -d "$i" ]]; then # Если элемент - директория
             if [[ ! -x "$i" ]]; then
-                dir_list_block+=("$i")
+                dir_list_block+=("$i") # Если нет прав на выполнение, добавить в список директорий без права доступа
             else
-		dir_list+=("$i")
+		dir_list+=("$i") # Иначе добавить директорию в список и рекурсивно обработать ее содержимое
 		process "$i"
   	    fi
-        elif [[ -f "$i" ]]; then
-            if [[  ! -r "$i" ]]; then
+        elif [[ -f "$i" ]]; then  # Если элемент - файл
+            if [[  ! -r "$i" ]]; then  # Если нет прав на чтение, добавить в список файлов, не имеющих доступ
                 files_list_block+=("$i")
-            elif [[ -h "$i" ]]; then
+            elif [[ -h "$i" ]]; then  # Если файл - символическая ссылка, добавить в список файлов-ссылок
                 files_list_links+=("$i")
-            else
+            else # Иначе добавить файл в список
 		all_files_list+=("$i")
                 name_of_file=$(basename "$i")
-		if [[ "$i" == "$input_dir/$name_of_file" ]]; then
+		if [[ "$i" == "$input_dir/$name_of_file" ]]; then # Проверка, принадлежит ли файл прямо к входной директории
         		level1_files_dict+=("$i")
 	  	fi
-                if [[ -e "$output_dir/$name_of_file" ]]; then
-                    change_for_same_files=1
+                if [[ -e "$output_dir/$name_of_file" ]]; then # Проверка существования файла с таким же именем в выходной директории
+                    change_for_same_files=1  # Если файл существует, добавить число
                     while [[ -e "$output_dir/$name_of_file.$change_for_same_files" ]]; do
                         change_for_same_files=$((change_for_same_files + 1))
                     done
                     cp -p "$i" "$output_dir/$name_of_file.$change_for_same_files"
                 else
-                    cp -p "$i" "$output_dir"
+                    cp -p "$i" "$output_dir" # Иначе просто скопировать в выходную директорию
                 fi
             fi
         fi
     done
 }
-
+# Вызов функции для обработки файлов и директорий во входной директории
 process "$input_dir"
-
+# Вывод информации о посещенных и пропущенных элементах
 if [[ ${#dir_list[@]} -gt 0 ]]; then
     echo "В результате были посещены следующие директории:"
     printf '%s\n' "${dir_list[@]}"
