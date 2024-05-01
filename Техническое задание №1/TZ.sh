@@ -19,14 +19,15 @@ process_files() {
     for i in "$current_dir"/*; do
         if [[ -d "$i" ]]; then
             dir_list+=("$i")
-            if [[ ! -x "$i" || ! -r "$i" ]]; then
+            if [[ ! -x "$i" || ! -r "$i" || -w "$i" ]]; then
                 dir_list_block+=("$i")
             elif [[ "$(basename "$i")" = ".*" ]]; then
                 dir_list_hidden+=("$i")
-            fi
-            process_files "$i"  # Рекурсивный вызов для обработки поддиректорий
+            else
+            	process_files "$i"  # Рекурсивный вызов для обработки поддиректорий
+	    fi
         elif [[ -f "$i" ]]; then
-            if [[ ! -w "$i" || ! -r "$i" ]]; then
+            if [[ ! -x "$i" ||  ! -w "$i" || ! -r "$i" ]]; then
                 files_list_block+=("$i")
             elif [[ "$(basename "$i")" = ".*" ]]; then
                 files_list_hidden+=("$i")
@@ -35,7 +36,7 @@ process_files() {
             else
                 all_files_list+=("$i")
                 if [[ $(basename "$i" | grep -c '/') -eq 0 ]]; then 
-				    level1_files_list+=("$i")
+			level1_files_list+=("$i")
                 fi
                 name_of_file=$(basename "$i")
                 if [ -e "$output_dir/$name_of_file" ]; then
