@@ -18,7 +18,7 @@ process_files() {
     for i in "$current_dir"/*; do
         if [[ -d "$i" ]]; then
             dir_list+=("$i")
-            if [[ ! -x "$i" || ! -r "$i" ]]; then
+            if [[ ! -x "$i" ]]; then
                 dir_list_block+=("$i")
             elif [[ "$(basename "$i")" = ".*" ]]; then
                 dir_list_hidden+=("$i")
@@ -26,14 +26,14 @@ process_files() {
 		process_files "$i"
   	    fi
         elif [[ -f "$i" ]]; then
-            if [[ ! -w "$i" || ! -r "$i" || ! -x "$i" ]]; then
+            if [[  ! -r "$i" ]]; then
                 files_list_block+=("$i")
-            elif [[ "$(basename "$i")" = ".*" ]]; then
+            elif [[ "$(basename "$i")" == .* ]]; then
                 files_list_hidden+=("$i")
             elif [[ -h "$i" ]]; then
                 files_list_links+=("$i")
             else
-				all_files_list+=("$i")
+		all_files_list+=("$i")
                 name_of_file=$(basename "$i")
                 if [ -e "$output_dir/$name_of_file" ]; then
                     change_for_same_files=1
