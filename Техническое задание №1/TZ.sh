@@ -14,7 +14,7 @@ files_list_links=()
 
 for i in "$input_dir"/*; do
 	if [[ -d "$i" ]]; then
-		if [[ ! -x "$i" && ! -r "$i" ]]; then
+		if [[ ! -x "$i" ||  ! -r "$i" ]]; then
 			dir_list_block+=("$i")
 		elif [[ "$(basename "$i")" = ".*" ]]; then
 			dir_list_hidden+=("$i")
@@ -22,11 +22,11 @@ for i in "$input_dir"/*; do
 			dir_list+=("$i")
 		fi
 	elif [[ -f "$i" ]]; then
-		if [[ ! -w "$i" && ! -r "$i" ]]; then
+		if [[ ! -w "$i"  || ! -r "$i" ]]; then
 			files_list_block+=("$i")
 		elif [[ "$(basename "$i")" = ".*" ]]; then
 			files_list_hidden+=("$i")
-		elif [[ ! -h "$i" ]]; then
+		elif [[  -h "$i" ]]; then
 			files_list_links+=("$i")
 		else
 			if [[ $(basename "$i" | grep -c '/') -eq 0 ]]; then 
@@ -42,21 +42,22 @@ for i in "$input_dir"/*; do
 			else 
 				cp -p "$i" "$output_dir" 
 			fi
+			all_files_list+=("$i")
 		fi
 	fi
 done 
 echo "В результате были посещены следующие директории:"
-printf "${dir_list[@]}"
+echo "$dir_list"
 echo "Однако попались директории, к которым нет доступа:"
-printf "${dir_list_block[@]}"
+echo  "$dir_list_block"
 echo "А также скрытые директории:"
-printf "${dir_list_hidden[@]}"
+echo "$dir_list_hidden"
 echo "Такие директории не учитывались"
 echo "В результате были скопированы следующие файлы:"
-printf "${all_files_list[@]}"
+echo  "$all_files_list"
 echo "Однако были проигнорированы файлы, к которым нет доступа чтения и записи:"
-printf "{files_list_block[@]}"
+echo  "$files_list_block"
 echo "А также скрытые файлы:"
-printf "${files_list_hidden[@]}"
+echo  "$files_list_hidden"
 echo "И не учитывались файлы-ссылки"
-printf "{$files_list_links[@]}"
+echo  "$files_list_links"
