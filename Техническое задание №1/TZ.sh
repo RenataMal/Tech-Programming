@@ -30,6 +30,8 @@ process_files() {
             else
 		all_files_list+=("$i")
                 name_of_file=$(basename "$i")
+		if [[ "$i" == "$input_dir/$name_of_file" ]]; then
+        		level1_files_dict+=("$i")
                 if [[ -e "$output_dir/$name_of_file" ]]; then
                     change_for_same_files=1
                     while [[ -e "$output_dir/$name_of_file.$change_for_same_files" ]]; do
@@ -45,11 +47,7 @@ process_files() {
 }
 
 process_files "$input_dir"
-for f in "${all_files_list[@]}"; do
-    if [[ "$f" == "$input_dir/"* ]]; then
-        level1_files_dict+=" $f"
-    fi
-done
+
 if [[ ${#dir_list[@]} -gt 0 ]]; then
     echo "В результате были посещены следующие директории:"
     printf '%s\n' "${dir_list[@]}"
