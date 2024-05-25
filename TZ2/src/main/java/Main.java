@@ -16,10 +16,10 @@ public class Main {
                 for (int i = 0; i < numbersStr.length; i++) {
                     numbers[i] = Long.parseLong(numbersStr[i]);
                 }
-                System.out.println("Минимальное число: " + _min(numbers));
-                System.out.println("Максимальное число: " + _max(numbers));
-                System.out.println("Сумма всех чисел: " + _sum(numbers));
-                System.out.println("Произведение всех чисел: " + _mult(numbers));
+                System.out.println("Минимальное число: " + min(numbers));
+                System.out.println("Максимальное число: " + max(numbers));
+                System.out.println("Сумма всех чисел: " + sum(numbers));
+                System.out.println("Произведение всех чисел: " + mult(numbers));
             }
         } catch (FileNotFoundException e) {
             System.err.println("Файл не найден: " + filePath);
@@ -28,7 +28,7 @@ public class Main {
         }
     }
 
-    public static long _min(long[] numbers) {
+    public static long min(long[] numbers) {
         long minn = numbers[0];
         for (long n : numbers) {
             if (minn > n) {
@@ -38,7 +38,7 @@ public class Main {
         return minn;
     }
 
-    public static long _max(long[] numbers) {
+    public static long max(long[] numbers) {
         long maxx = numbers[0];
         for (long n : numbers) {
             if (maxx < n) {
@@ -48,27 +48,25 @@ public class Main {
         return maxx;
     }
 
-    public static long _sum(long[] numbers) {
+    public static long sum(long[] numbers) {
         long summ = 0;
         for (long n : numbers) {
             try {
                 summ = Math.addExact(summ, n);
             } catch (ArithmeticException e) {
                 System.out.println("Возникло переполнение при вычислении суммы: " + e);
-                System.exit(1);
             }
         }
         return summ;
     }
 
-    public static long _mult(long[] numbers) {
+    public static long mult(long[] numbers) {
         long m = 1;
         for (long n : numbers) {
             try {
                 m = Math.multiplyExact(m, n);
             } catch (ArithmeticException e) {
                 System.out.println("Возникло переполнение при вычислении произведения: " + e);
-                System.exit(1);
             }
         }
         return m;
