@@ -5,7 +5,7 @@
 
 # Содержание
 - [Техническое задание №1 (ТЗ1)](https://github.com/RenataMal/Tech-Programming/tree/main?tab=readme-ov-file#%D1%82%D0%B5%D1%85%D0%BD%D0%B8%D1%87%D0%B5%D1%81%D0%BA%D0%BE%D0%B5-%D0%B7%D0%B0%D0%B4%D0%B0%D0%BD%D0%B8%D0%B5-1-%D1%82%D0%B71)
-- Техническое задание №2 (ТЗ2)
+- [Техническое задание №2 (ТЗ2)](https://github.com/RenataMal/Tech-Programming/blob/main/README.md#%D1%82%D0%B5%D1%85%D0%BD%D0%B8%D1%87%D0%B5%D1%81%D0%BA%D0%BE%D0%B5-%D0%B7%D0%B0%D0%B4%D0%B0%D0%BD%D0%B8%D0%B5-2-%D1%82%D0%B72)
 - Техническое задание №3 (ТЗ3)
 
 # Техническое задание №1 (ТЗ1)
