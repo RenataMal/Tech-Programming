@@ -12,9 +12,9 @@ public class Main {
             String line = buffile.readLine();
             if (line != null) {
                 String[] numbersStr = line.split(" ");
-                long[] numbers = new long[numbersStr.length];
+                int[] numbers = new int[numbersStr.length];
                 for (int i = 0; i < numbersStr.length; i++) {
-                    numbers[i] = Long.parseLong(numbersStr[i]);
+                    numbers[i] = Int.parseInt(numbersStr[i]);
                 }
                 System.out.println("Минимальное число: " + min(numbers));
                 System.out.println("Максимальное число: " + max(numbers));
@@ -28,9 +28,9 @@ public class Main {
         }
     }
 
-    public static long min(long[] numbers) {
-        long minn = numbers[0];
-        for (long n : numbers) {
+    public static int min(int[] numbers) {
+        int minn = numbers[0];
+        for (int n : numbers) {
             if (minn > n) {
                 minn = n;
             }
@@ -38,9 +38,9 @@ public class Main {
         return minn;
     }
 
-    public static long max(long[] numbers) {
-        long maxx = numbers[0];
-        for (long n : numbers) {
+    public static int max(int[] numbers) {
+        int maxx = numbers[0];
+        for (int n : numbers) {
             if (maxx < n) {
                 maxx = n;
             }
@@ -48,9 +48,9 @@ public class Main {
         return maxx;
     }
 
-    public static long sum(long[] numbers) {
-        long summ = 0;
-        for (long n : numbers) {
+    public static int sum(int[] numbers) {
+        int summ = 0;
+        for (int n : numbers) {
             try {
                 summ = Math.addExact(summ, n);
             } catch (ArithmeticException e) {
@@ -60,9 +60,9 @@ public class Main {
         return summ;
     }
 
-    public static long mult(long[] numbers) {
+    public static int mult(int[] numbers) {
         long m = 1;
-        for (long n : numbers) {
+        for (int n : numbers) {
             try {
                 m = Math.multiplyExact(m, n);
             } catch (ArithmeticException e) {
