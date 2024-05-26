@@ -35,6 +35,6 @@ jobs:
     needs: build
     steps:
       - name: Запуск тестов в ручном режиме
-        run: mvn -B test
+        run: mvn test
         env:
           TEST_MODE: manual
