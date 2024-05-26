@@ -36,11 +36,11 @@ jobs:
     steps:
       - name: Вывод текущего каталога
         run: pwd
-
-      - name: Переход в каталог с проектом
-        run: cd /home/runner/work/Tech-Programming
-      
+        
       - name: Запуск тестов в ручном режиме
-        run: mvn -B clean test
+        run: mvn compile
+
+      - name: Запуск тестов в ручном режиме 2
+        run: mvn -B test
         env:
           TEST_MODE: manual
