@@ -30,6 +30,8 @@ jobs:
         test_output=$(mvn test)
         passed_tests=$(echo "$test_output" | grep -oP '\d+ tests? passed' | sed 's/tests?//')
         failed_tests=$(echo "$test_output" | grep -oP '\d+ tests? failed' | sed 's/tests?//')
+        echo "Успешные тесты: $passed_tests"
+        echo "Проваленные тесты: $failed_tests"
         echo "::set-output name=passed_tests::${passed_tests}"
         echo "::set-output name=failed_tests::${failed_tests}"
 
