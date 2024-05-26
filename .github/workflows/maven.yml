@@ -23,7 +23,7 @@ jobs:
       with:
         java-version: '11'
         distribution: 'adopt'
-        
+
     - name: Запуск тестов
       run: mvn -B test
 
@@ -33,9 +33,6 @@ jobs:
     steps:
       - name: Вывод текущего каталога
         run: pwd
-
-      - name: Переход в каталог с проектом
-        run: cd Tech-Programming  
 
       - name: Запуск тестов в ручном режиме 
         run: mvn -B test
