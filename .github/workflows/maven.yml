@@ -36,6 +36,9 @@ jobs:
     steps:
       - name: Вывод текущего каталога
         run: pwd
+
+      - name: Переход в каталог с проектом
+        run: cd /home/runner/work/Tech-Programming
       
       - name: Запуск тестов в ручном режиме
         run: mvn -B test
