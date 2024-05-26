@@ -10,6 +10,6 @@ public class ExtraFailTest {
 
         Assertions.assertTimeoutPreemptively(Duration.ofNanos(1), () -> {
             Main.min(numbers);
-        }, 
+        });
     }
 }
