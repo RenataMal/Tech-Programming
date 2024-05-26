@@ -30,13 +30,6 @@ jobs:
         mvn -B test | tee "$TEST_RESULTS"
         TEST_PASSED=$(grep -oP '\d+ tests passed' "$TEST_RESULTS" | awk '{sum += $1} END {print sum}')
         TEST_FAILED=$(grep -oP '\d+ tests failed' "$TEST_RESULTS" | awk '{sum += $1} END {print sum}')
-        if [[ $TEST_FAILED -eq 0 ]]; then
-          echo "result=Прохождение всех тестов успешное."
-        else
-          echo "result=Прохождение всех тестов провальное."
-        fi
-        echo "TEST_PASSED=$TEST_PASSED"
-        echo "TEST_FAILED=$TEST_FAILED"
       
     - name: Оповещение в Telegram
       if: always()
@@ -45,6 +38,6 @@ jobs:
         to: ${{ secrets.TELEGRAM_CHAT_ID }}
         token: ${{ secrets.TELEGRAM_BOT_TOKEN }}
         message: |
-          ${{ env.result }}
+          ${{ steps.build.outputs.result }}
           Успешно пройдено тестов: ${{ env.TEST_PASSED }}
           Не пройдено тестов: ${{ env.TEST_FAILED }}
