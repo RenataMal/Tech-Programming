@@ -15,7 +15,7 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-    - name: Проверка кода
+    - name: Checkout кода
       uses: actions/checkout@v2
 
     - name: Установка JDK 11
@@ -30,11 +30,14 @@ jobs:
     - name: Запуск тестов
       run: mvn -B test
 
-  manual-test:  
+  manual-test: 
     runs-on: ubuntu-latest
     needs: build
     steps:
+      - name: Вывод текущего каталога
+        run: pwd
+      
       - name: Запуск тестов в ручном режиме
-        run: mvn test
+        run: mvn -B test
         env:
           TEST_MODE: manual
