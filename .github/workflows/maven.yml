@@ -1,59 +1,44 @@
 name: Java CI
 
 on:
+  workflow_dispatch: 
   push:
     branches:
       - main
-  workflow_dispatch:
-
+      
 jobs:
   build:
+
     runs-on: ubuntu-latest
 
     steps:
-    - name: Checkout code
+    - name: Проверка кода
       uses: actions/checkout@v2
 
-    - name: Setup JDK 11
+    - name: Установка JDK 11
       uses: actions/setup-java@v2
       with:
         java-version: '11'
         distribution: 'adopt'
 
-    - name: Build with Maven
-      run: mvn -B package
+    - name: Сборка с помощью Maven
+      run: mvn -B package  
 
-    - name: Run tests
+    - name: Запуск тестов
       run: mvn -B test
-
-    - name: Echo secrets for debug
-      run: |
-        echo "TELEGRAM_BOT_TOKEN: ${{ secrets.TELEGRAM_BOT_TOKEN }}"
-        echo "TELEGRAM_CHAT_ID: ${{ secrets.TELEGRAM_CHAT_ID }}"
-        echo "Actor: ${{ github.actor }}"
-        echo "Repository: ${{ github.repository }}"
-        echo "Commit message: ${{ github.event.head_commit.message }}"
-
-    - name: Telegram notification on success
+      
+    - name: Оповещение в Telegram (успех)
       if: success()
       uses: appleboy/telegram-action@master
       with:
         to: ${{ secrets.TELEGRAM_CHAT_ID }}
         token: ${{ secrets.TELEGRAM_BOT_TOKEN }}
-        message: |
-          Прохождение тестов успешное.
-          Actor: ${{ github.actor }}
-          Repository: ${{ github.repository }}
-          Commit message: ${{ github.event.head_commit.message }}
+        message: "Прохождение тестов успешное."
 
-    - name: Telegram notification on failure
+    - name: Оповещение в Telegram (провал)
       if: failure()
       uses: appleboy/telegram-action@master
       with:
         to: ${{ secrets.TELEGRAM_CHAT_ID }}
         token: ${{ secrets.TELEGRAM_BOT_TOKEN }}
-        message: |
-          Прохождение тестов провальное.
-          Actor: ${{ github.actor }}
-          Repository: ${{ github.repository }}
-          Commit message: ${{ github.event.head_commit.message }}
+        message: "Прохождение тестов провальное."
