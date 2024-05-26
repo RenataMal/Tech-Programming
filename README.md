@@ -114,6 +114,7 @@
 
 ## Описание тестов
 [![Java CI](https://github.com/RenataMal/Tech-Programming/actions/workflows/maven.yml/badge.svg)](https://github.com/RenataMal/Tech-Programming/actions/workflows/maven.yml)
+
 Тестирование программы включает:
 
 **Тесты включающие проверки для методов нахождения минимального и максимального значений, вычисления суммы и произведения чисел.**
