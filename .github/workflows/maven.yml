@@ -31,17 +31,20 @@ jobs:
         TEST_PASSED=$(grep -oP '\d+ tests passed' "$TEST_RESULTS" | awk '{sum += $1} END {print sum}')
         TEST_FAILED=$(grep -oP '\d+ tests failed' "$TEST_RESULTS" | awk '{sum += $1} END {print sum}')
         if [[ $TEST_FAILED -eq 0 ]]; then
-          echo "Прохождение всех тестов успешное."
+          echo "result=Прохождение всех тестов успешное."
         else
-          echo "Прохождение всех тестов провальное."
+          echo "result=Прохождение всех тестов провальное."
         fi
-        echo "Успешно пройдено тестов: $TEST_PASSED"
-        echo "Не пройдено тестов: $TEST_FAILED"
-
+        echo "TEST_PASSED=$TEST_PASSED"
+        echo "TEST_FAILED=$TEST_FAILED"
+      
     - name: Оповещение в Telegram
+      if: always()
       uses: appleboy/telegram-action@master
       with:
         to: ${{ secrets.TELEGRAM_CHAT_ID }}
         token: ${{ secrets.TELEGRAM_BOT_TOKEN }}
         message: |
-          ${{ steps.build.outputs.result }}
+          ${{ env.result }}
+          Успешно пройдено тестов: ${{ env.TEST_PASSED }}
+          Не пройдено тестов: ${{ env.TEST_FAILED }}
