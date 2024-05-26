@@ -39,5 +39,5 @@ jobs:
         token: ${{ secrets.TELEGRAM_BOT_TOKEN }}
         message: |
           ${{ steps.build.outputs.result }}
-          Успешно пройдено тестов: ${{ env.TEST_PASSED }}
-          Не пройдено тестов: ${{ env.TEST_FAILED }}
+          Успешно пройдено тестов: ${{ steps.build.outputs.TEST_PASSED }}
+          Не пройдено тестов: ${{ steps.build.outputs.TEST_FAILED }}
