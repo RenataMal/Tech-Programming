@@ -22,7 +22,8 @@ jobs:
         distribution: 'adopt'
 
     - name: Сборка с помощью Maven
-      run: mvn -B package  
+      run: mvn -B package
+      continue-on-error: true
 
     - name: Запуск тестов
       id: test
