@@ -25,7 +25,7 @@ jobs:
         distribution: 'adopt'
 
     - name: Запуск тестов
-      run: mvn -B test
+      run: mvn -B test -f pom.xml
 
   manual-test: 
     runs-on: ubuntu-latest
@@ -35,6 +35,6 @@ jobs:
         run: pwd
 
       - name: Запуск тестов в ручном режиме 
-        run: mvn -B test
+        run: mvn -B test -f pom.xml
         env:
           TEST_MODE: manual
