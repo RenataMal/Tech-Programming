@@ -26,4 +26,19 @@ jobs:
 
     - name: Запуск тестов
       run: mvn -B test
+      
+    - name: Оповещение в Telegram (успех)
+      if: ${{ job.status == 'completed' && steps.build.outcome == 'success' }}
+      uses: appleboy/telegram-action@master
+      with:
+        to: ${{ secrets.TELEGRAM_CHAT_ID }}
+        token: ${{ secrets.TELEGRAM_BOT_TOKEN }}
+        message: "Прохождение тестов успешное."
 
+    - name: Оповещение в Telegram (провал)
+      if: ${{ job.status == 'completed' && steps.build.outcome == 'failure' }}
+      uses: appleboy/telegram-action@master
+      with:
+        to: ${{ secrets.TELEGRAM_CHAT_ID }}
+        token: ${{ secrets.TELEGRAM_BOT_TOKEN }}
+        message: "Прохождение тестов провальное."
