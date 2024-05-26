@@ -25,20 +25,23 @@ jobs:
       run: mvn -B package  
 
     - name: Запуск тестов
-      run: mvn -B test
-      
-    - name: Оповещение в Telegram (успех)
-      if: success()
-      uses: appleboy/telegram-action@master
-      with:
-        to: ${{ secrets.TELEGRAM_CHAT_ID }}
-        token: ${{ secrets.TELEGRAM_BOT_TOKEN }}
-        message: "Прохождение тестов успешное."
+      run: |
+        TEST_RESULTS=$(mktemp)
+        mvn -B test | tee "$TEST_RESULTS"
+        TEST_PASSED=$(grep -oP '\d+ tests passed' "$TEST_RESULTS" | awk '{sum += $1} END {print sum}')
+        TEST_FAILED=$(grep -oP '\d+ tests failed' "$TEST_RESULTS" | awk '{sum += $1} END {print sum}')
+        if [[ $TEST_FAILED -eq 0 ]]; then
+          echo "Прохождение всех тестов успешное."
+        else
+          echo "Прохождение всех тестов провальное."
+        fi
+        echo "Успешно пройдено тестов: $TEST_PASSED"
+        echo "Не пройдено тестов: $TEST_FAILED"
 
-    - name: Оповещение в Telegram (провал)
-      if: failure()
+    - name: Оповещение в Telegram
       uses: appleboy/telegram-action@master
       with:
         to: ${{ secrets.TELEGRAM_CHAT_ID }}
         token: ${{ secrets.TELEGRAM_BOT_TOKEN }}
-        message: "Прохождение тестов провальное."
+        message: |
+          ${{ steps.build.outputs.result }}
