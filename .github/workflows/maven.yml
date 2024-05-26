@@ -23,11 +23,8 @@ jobs:
 
     - name: Сборка с помощью Maven
       run: mvn -B package
-      continue-on-error: true
 
     - name: Запуск тестов
-      id: test
-      continue-on-error: true
       run: |
         test_output=$(mvn test)
         passed_tests=$(echo "$test_output" | grep -oP '\d+ tests? passed' | sed 's/tests?//')
