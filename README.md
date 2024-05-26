@@ -113,7 +113,7 @@
    - Некорректные: `123 abc 456.78`, пустая строка, строки с нечисловыми символами.
 
 ## Описание тестов
-![Java CI](https://github.com/RenataMal/Tech-Programming/actions/workflows/maven.yml/badge.svg)(https://github.com/RenataMal/Tech-Programming/actions/workflows/maven.yml)
+[![Java CI](https://github.com/RenataMal/Tech-Programming/actions/workflows/maven.yml/badge.svg)](https://github.com/RenataMal/Tech-Programming/actions/workflows/maven.yml)
 Тестирование программы включает:
 
 **Тесты включающие проверки для методов нахождения минимального и максимального значений, вычисления суммы и произведения чисел.**
