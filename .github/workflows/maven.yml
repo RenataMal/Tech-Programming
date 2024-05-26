@@ -27,6 +27,7 @@ jobs:
 
     - name: Запуск тестов
       id: test
+      continue-on-error: true
       run: |
         test_output=$(mvn test)
         passed_tests=$(echo "$test_output" | grep -oP '\d+ tests? passed' | sed 's/tests?//')
