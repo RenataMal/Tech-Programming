@@ -1,11 +1,11 @@
 name: Java CI
 
 on:
-  workflow_dispatch: 
   push:
     branches:
       - main
-      
+  workflow_dispatch: 
+
 jobs:
   build:
 
@@ -22,23 +22,23 @@ jobs:
         distribution: 'adopt'
 
     - name: Сборка с помощью Maven
-      run: mvn -B package
+      run: mvn -B package  
 
     - name: Запуск тестов
-      run: |
-        test_output=$(mvn test)
-        passed_tests=$(echo "$test_output" | grep -oP '\d+ tests? passed' | sed 's/tests?//')
-        failed_tests=$(echo "$test_output" | grep -oP '\d+ tests? failed' | sed 's/tests?//')
-        echo "Успешные тесты: $passed_tests"
-        echo "Проваленные тесты: $failed_tests"
-        echo "::set-output name=passed_tests::${passed_tests}"
-        echo "::set-output name=failed_tests::${failed_tests}"
-
-    - name: Оповещение в Telegram
-      if: always()
+      run: mvn -B test
+      
+    - name: Оповещение в Telegram (успех)
+      if: success()
       uses: appleboy/telegram-action@master
       with:
         to: ${{ secrets.TELEGRAM_CHAT_ID }}
         token: ${{ secrets.TELEGRAM_BOT_TOKEN }}
-        message: |
-          Тесты успешно пройдены: ${{ steps.test.outputs.passed_tests }}. Тесты провалились: ${{ steps.test.outputs.failed_tests }}.
+        message: "Прохождение тестов успешное."
+
+    - name: Оповещение в Telegram (провал)
+      if: failure()
+      uses: appleboy/telegram-action@master
+      with:
+        to: ${{ secrets.TELEGRAM_CHAT_ID }}
+        token: ${{ secrets.TELEGRAM_BOT_TOKEN }}
+        message: "Прохождение тестов провальное."
