@@ -24,8 +24,11 @@ jobs:
         java-version: '11'
         distribution: 'adopt'
 
+    - name: Поиск абсолютного пути к файлу pom.xml
+      run: echo "::set-env name=ABSOLUTE_POM_PATH::$(find $GITHUB_WORKSPACE -name pom.xml)"
+
     - name: Запуск тестов
-      run: mvn -B test -f pom.xml
+      run: mvn -B test -f $ABSOLUTE_POM_PATH
 
   manual-test: 
     runs-on: ubuntu-latest
@@ -34,7 +37,10 @@ jobs:
       - name: Вывод текущего каталога
         run: pwd
 
+      - name: Поиск абсолютного пути к файлу pom.xml
+        run: echo "::set-env name=ABSOLUTE_POM_PATH::$(find $GITHUB_WORKSPACE -name pom.xml)"
+
       - name: Запуск тестов в ручном режиме 
-        run: mvn -B test -f pom.xml
+        run: mvn -B test -f $ABSOLUTE_POM_PATH
         env:
           TEST_MODE: manual
