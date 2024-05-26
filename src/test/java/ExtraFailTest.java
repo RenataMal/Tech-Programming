@@ -3,7 +3,7 @@ import org.junit.jupiter.api.Assertions;
 
 import java.time.Duration;
 
-public class ExtraFailTest {
+public class ExtraTest {
     @Test
     void extra_test_timeout_min() {
         int[] numbers = {323, 23, 4, 435, 435, 43663, 21134, 78970, 13654768, 42545};
