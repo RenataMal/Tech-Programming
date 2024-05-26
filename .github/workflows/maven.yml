@@ -36,9 +36,6 @@ jobs:
     steps:
       - name: Вывод текущего каталога
         run: pwd
-
-      - name: Переход в каталог
-        run: cd /RenataMal/Tech-Programming
         
       - name: Запуск тестов в ручном режиме
         run: mvn compile
