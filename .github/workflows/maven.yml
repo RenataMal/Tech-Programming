@@ -41,6 +41,6 @@ jobs:
         run: cd /home/runner/work/Tech-Programming
       
       - name: Запуск тестов в ручном режиме
-        run: mvn -B test
+        run: mvn -B clean test
         env:
           TEST_MODE: manual
