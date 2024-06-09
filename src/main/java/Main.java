@@ -1,11 +1,11 @@
 import java.io.*;
-import java.util.Scanner;
+import java.util.Arrays;
+import java.util.Random;
+
 
 public class Main {
     public static void main(String[] args) {
-        Scanner scanner = new Scanner(System.in);
-        System.out.println("Введите путь к файлу:"); // Предлагаем пользователю ввести путь к файлу
-        String filePath = scanner.nextLine(); // Читаем путь к файлу из консоли
+        final String filePath = "numbers.txt";
 
         try (BufferedReader buffile = new BufferedReader(new FileReader(filePath))) { // Открываем файл для чтения
             String line = buffile.readLine(); // Читаем первую строку из файла
@@ -30,6 +30,12 @@ public class Main {
         } catch (NumberFormatException e) {
             System.err.println("Некорректный формат числа в файле: " + e.getMessage()); // Выводим сообщение об ошибке преобразования строки в число
         }
+
+        // Запуск тестов на производительность
+        min_speed();
+        max_speed();
+        sum_speed();
+        mult_speed();
     }
 
     // Метод для нахождения минимального числа в массиве
@@ -71,9 +77,70 @@ public class Main {
     public static long mult(int[] numbers) {
         long result = 1;
         for (int n : numbers) { // Проходим по всем числам в массиве
-            result *= n; // Умножаем числа друг на друга
+            try {
+                result *= n; // Умножаем числа друг на друга
+            } catch (ArithmeticException e) {
+                throw new ArithmeticException("Возникло переполнение при вычислении произведения: " + e.getMessage()); // Если произошло переполнение, выбрасываем исключение
+            }
         }
         return result; // Возвращаем произведение всех чисел
+    }
+
+    // Тесты для проверки производительности
+    public static void min_speed() {
+        int[] size_of_array = {10, 100, 1000, 10000, 100000, 1000000};
+        for (int size : size_of_array) {
+            Random r = new Random();
+            int[] numbers = new int[size];
+            Arrays.setAll(numbers, i -> r.nextInt(100));
+            long start = System.nanoTime();
+            min(numbers);
+            long end = System.nanoTime();
+            long all_time = end - start;
+            System.out.println("Количество чисел в файле: " + size + ". Время выполнения поиска минимума в наносекундах: " + all_time);
+        }
+    }
+
+    public static void max_speed() {
+        int[] size_of_array = {10, 100, 1000, 10000, 100000, 1000000};
+        for (int size : size_of_array) {
+            Random r = new Random();
+            int[] numbers = new int[size];
+            Arrays.setAll(numbers, i -> r.nextInt(100));
+            long start = System.nanoTime();
+            max(numbers);
+            long end = System.nanoTime();
+            long all_time = end - start;
+            System.out.println("Количество чисел в файле: " + size + ". Время выполнения поиска максимума в наносекундах: " + all_time);
+        }
+    }
+
+    public static void sum_speed() {
+        int[] size_of_array = {10, 100, 1000, 10000, 100000, 1000000};
+        for (int size : size_of_array) {
+            Random r = new Random();
+            int[] numbers = new int[size];
+            Arrays.setAll(numbers, i -> r.nextInt(100));
+            long start = System.nanoTime();
+            sum(numbers);
+            long end = System.nanoTime();
+            long all_time = end - start;
+            System.out.println("Количество чисел в файле: " + size + ". Время выполнения вычисления суммы всех чисел в наносекундах: " + all_time);
+        }
+    }
+
+    public static void mult_speed() {
+        int[] size_of_array = {10, 100, 1000, 10000, 100000, 1000000};
+        for (int size : size_of_array) {
+            Random r = new Random();
+            int[] numbers = new int[size];
+            Arrays.setAll(numbers, i -> r.nextInt(100));
+            long start = System.nanoTime();
+            mult(numbers);
+            long end = System.nanoTime();
+            long all_time = end - start;
+            System.out.println("Количество чисел в файле: " + size + ". Время выполнения нахождения произведения всех чисел в наносекундах: " + all_time);
+        }
     }
 
 }
